@@ -1,0 +1,45 @@
+# 本机配置与凭据
+/config/config.php
+.env
+.env.*
+!.env.example
+!.env.*.example
+*.pem
+*.key
+*.p12
+*.pfx
+
+# 安装及运行生成的文件
+/install/install.lock
+/storage/install.mutex
+/config/.install-*
+/storage/logs/*
+!/storage/logs/.gitkeep
+*.log
+
+# 导出数据与备份（保留 database/ 中的 SQL 表结构和迁移）
+*.csv
+*.sql.gz
+*.sql.zip
+*.sql.bz2
+*.bak
+*.backup
+/backups/
+/dumps/
+/exports/
+
+# 本机开发工具与依赖
+/.aws/
+/.codex/
+/.agents/
+/.idea/
+/.vscode/
+/vendor/
+/node_modules/
+
+# 系统和编辑器临时文件
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~

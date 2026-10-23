@@ -1,0 +1,15 @@
+Options -Indexes -MultiViews
+DirectoryIndex index.php
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^(?:app|config|database|scripts|tests|docs|storage|deploy)(?:/|$) - [F,END,NC]
+    RewriteRule (^|/)\. - [F,END]
+    RewriteRule \.(?:md|sql|log|jsonl|ini|env|bak|dist|example)$ - [F,END,NC]
+    RewriteRule ^router\.php$ - [F,END,NC]
+</IfModule>
+<FilesMatch "(?i)\.(md|sql|log|jsonl|ini|env|bak|dist|example)$">
+    Require all denied
+</FilesMatch>
+<FilesMatch "^\.">
+    Require all denied
+</FilesMatch>

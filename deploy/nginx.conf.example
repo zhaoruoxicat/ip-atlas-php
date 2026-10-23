@@ -1,0 +1,28 @@
+# server {} 内使用；域名、HTTPS 证书及 PHP-FPM socket 按环境设置。
+root /srv/ip-atlas;
+index index.php;
+autoindex off;
+
+# 在 http {} 中定义不记录 Query 的日志：
+# log_format ip_safe '$remote_addr [$time_local] "$request_method $uri $server_protocol" $status $body_bytes_sent';
+# access_log /var/log/nginx/ip-atlas.access.log ip_safe;
+
+location ~* ^/(app|config|database|scripts|tests|docs|storage|deploy)(/|$) { return 404; }
+location ~ /\. { return 404; }
+location ~* \.(md|sql|log|jsonl|ini|env|bak|dist|example)$ { return 404; }
+location ~ ^/(index|login|logout|token|ip|query)\.php$ {
+    try_files $uri =404;
+    include fastcgi_params;
+    fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    fastcgi_param HTTP_AUTHORIZATION $http_authorization;
+    fastcgi_pass unix:/run/php/php8.4-fpm.sock;
+    fastcgi_read_timeout 30s;
+}
+location = /install/install.php {
+    include fastcgi_params;
+    fastcgi_param SCRIPT_FILENAME $document_root/install/install.php;
+    fastcgi_pass unix:/run/php/php8.4-fpm.sock;
+}
+location ~* ^/(style|assets)/[a-z0-9_.-]+\.(css|js)$ { try_files $uri =404; }
+location / { return 404; }
+location = / { rewrite ^ /index.php last; }
